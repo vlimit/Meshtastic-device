@@ -29,7 +29,7 @@ DeviceState versions used to be defined in the .proto file but really only this 
 #define here.
 */
 
-#define DEVICESTATE_CUR_VER 10
+#define DEVICESTATE_CUR_VER 11
 #define DEVICESTATE_MIN_VER DEVICESTATE_CUR_VER
 
 #ifndef NO_ESP32
@@ -66,6 +66,33 @@ static uint8_t ourMacAddr[6];
  */
 NodeNum displayedNodeNum;
 
+/**
+ * Generate a short suffix used to disambiguate channels that might have the same "name" entered by the human but different PSKs.
+ * The ideas is that the PSK changing should be visible to the user so that they see they probably messed up and that's why they
+their nodes
+ * aren't talking to each other.
+ *
+ * This string is of the form "#name-XY".
+ *
+ * Where X is a letter from A to Z (base26), and formed by xoring all the bytes of the PSK together.
+ * Y is not yet used but should eventually indicate 'speed/range' of the link
+ *
+ * This function will also need to be implemented in GUI apps that talk to the radio.
+ *
+ * https://github.com/meshtastic/Meshtastic-device/issues/269
+ */
+const char *getChannelName()
+{
+    static char buf[32];
+
+    uint8_t code = 0;
+    for (int i = 0; i < channelSettings.psk.size; i++)
+        code ^= channelSettings.psk.bytes[i];
+
+    snprintf(buf, sizeof(buf), "#%s-%c", channelSettings.name, 'A' + (code % 26));
+    return buf;
+}
+
 NodeDB::NodeDB() : nodes(devicestate.node_db), numNodes(&devicestate.node_db_count) {}
 
 void NodeDB::resetRadioConfig()
@@ -93,8 +120,8 @@ void NodeDB::resetRadioConfig()
         // so incompatible radios can talk together
         channelSettings.modem_config = ChannelSettings_ModemConfig_Bw125Cr48Sf4096; // slow and long range
 
-        channelSettings.tx_power = 23;
-        memcpy(&channelSettings.psk.bytes, &defaultpsk, sizeof(channelSettings.psk));
+        channelSettings.tx_power = 0; // default
+        memcpy(&channelSettings.psk.bytes, defaultpsk, sizeof(channelSettings.psk));
         channelSettings.psk.size = sizeof(defaultpsk);
         strcpy(channelSettings.name, "Default");
     }
@@ -356,7 +383,7 @@ void NodeDB::updateFrom(const MeshPacket &mp)
             info->position.time = oldtime;
             info->has_position = true;
             updateGUIforNode = info;
-            notifyObservers(true);  //Force an update whether or not our node counts have changed
+            notifyObservers(true); // Force an update whether or not our node counts have changed
             break;
         }
 
@@ -371,7 +398,7 @@ void NodeDB::updateFrom(const MeshPacket &mp)
                     devicestate.has_rx_text_message = true;
                     updateTextMessage = true;
                     powerFSM.trigger(EVENT_RECEIVED_TEXT_MSG);
-                    notifyObservers(true);  //Force an update whether or not our node counts have changed
+                    notifyObservers(true); // Force an update whether or not our node counts have changed
                 }
             }
             break;
@@ -390,7 +417,7 @@ void NodeDB::updateFrom(const MeshPacket &mp)
             if (changed) {
                 updateGUIforNode = info;
                 powerFSM.trigger(EVENT_NODEDB_UPDATED);
-                notifyObservers(true);  //Force an update whether or not our node counts have changed
+                notifyObservers(true); // Force an update whether or not our node counts have changed
 
                 // Not really needed - we will save anyways when we go to sleep
                 // We just changed something important about the user, store our DB
@@ -400,7 +427,7 @@ void NodeDB::updateFrom(const MeshPacket &mp)
         }
 
         default: {
-            notifyObservers();  //If the node counts have changed, notify observers
+            notifyObservers(); // If the node counts have changed, notify observers
         }
         }
     }

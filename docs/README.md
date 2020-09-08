@@ -66,6 +66,8 @@ The link above will return older more stable releases. We would prefer if you jo
 
 If you'd like to help with development, the source code is [on github](https://github.com/meshtastic/Meshtastic-Android).
 
+The app is also distributed for Amazon Fire devices via the Amazon appstore: [![Amazon appstore link](https://raw.githubusercontent.com/meshtastic/Meshtastic-device/master/images/amazon-fire-button.png)](https://www.amazon.com/Geeksville-Industries-Meshtastic/dp/B08CY9394Q)
+
 ## Supported hardware
 
 We currently support two brands of radios. The [TTGO T-Beam](https://www.aliexpress.com/item/4001178678568.html) and the [Heltec LoRa 32](https://heltec.org/project/wifi-lora-32/). Most people should buy the T-Beam and a 18650 battery (total cost less than \$35). Also, the version of the T-Beam we link to is shipped with Meshtastic **preinstalled** by TTGO, so you don't have to install it yourself.
@@ -74,11 +76,14 @@ Make sure to buy the frequency range which is legal for your country. For the US
 
 Instructions for installing prebuilt firmware can be found [here](https://github.com/meshtastic/Meshtastic-esp32/blob/master/README.md).
 
-For a nice printable cases:
-
-1. TTGO T-Beam V0 see this [design](https://www.thingiverse.com/thing:3773717) by [bsiege](https://www.thingiverse.com/bsiege).
-2. TTGO T_Beam V1 see this [design](https://www.thingiverse.com/thing:3830711) by [rwanrooy](https://www.thingiverse.com/rwanrooy) or this [remix](https://www.thingiverse.com/thing:3949330) by [8ung](https://www.thingiverse.com/8ung)
-3. Heltec Lora32 see this [design](https://www.thingiverse.com/thing:3125854) by [ornotermes](https://www.thingiverse.com/ornotermes).
+For a nice looking cases:
+  - 3D printable cases
+    1. TTGO T-Beam V0 see this [design](https://www.thingiverse.com/thing:3773717) by [bsiege](https://www.thingiverse.com/bsiege).
+    2. TTGO T_Beam V1 (SMA) see this [design](https://www.thingiverse.com/thing:3830711) by [rwanrooy](https://www.thingiverse.com/rwanrooy) or this [remix](https://www.thingiverse.com/thing:3949330) by [8ung](https://www.thingiverse.com/8ung)
+    3. TTGO T_Beam V1 (IPEX) see this [design](https://www.thingiverse.com/thing:4587297) by [drewsed](https://www.thingiverse.com/drewsed)
+    4. Heltec Lora32 see this [design](https://www.thingiverse.com/thing:3125854) by [ornotermes](https://www.thingiverse.com/ornotermes).
+  - Laser-cut cases
+    1. TTGO T_Beam V1 (SMA) see this [design](https://www.thingiverse.com/thing:4552771) by [jefish](https://www.thingiverse.com/jefish) 
 
 # IMPORTANT DISCLAIMERS AND FAQ
 
